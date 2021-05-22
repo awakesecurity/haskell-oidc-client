@@ -125,7 +125,7 @@ requestTokens oidc savedNonce code manager = do
     json <- getTokensJson `catch` I.rethrow
     case eitherDecode json of
         Right ts -> validate oidc savedNonce ts
-        Left err -> throwM . JsonException $ pack err
+        Left err -> throwM . JsonException $ (pack err <> ": " <> pack (show json))
   where
     getTokensJson = do
         req <- parseUrl endpoint
